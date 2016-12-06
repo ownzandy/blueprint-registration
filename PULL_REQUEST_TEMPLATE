@@ -1,0 +1,18 @@
+Make sure these boxes are checked before submitting your pull request for review!
+
+- [ ] I have written a brief description of what I did
+- [ ] I have reviewed this code myself
+- [ ] I have checked that the TravisCI build passes
+- [ ] I have removed all unnecessary print statements
+- [ ] There are no new compiler warnings
+- [ ] I have listed migrations (if applicable)
+- [ ] I have listed .env changes (if applicable)
+
+Testing (if applicable): 
+
+- [ ] I have added unit tests
+
+After submitting, be sure to:
+
+- [ ] Label this PR as 'request to review'
+

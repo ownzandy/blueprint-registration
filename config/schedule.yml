@@ -1,0 +1,8 @@
+mailchimp_subscribe:
+  every:
+    - "30m"
+  args: "sync"
+  class: Mailchimp
+  queue: high
+  description: Syns mailchimp with database
+  rails_env: development, production, staging

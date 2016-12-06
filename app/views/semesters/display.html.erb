@@ -1,0 +1,61 @@
+<div class="container">
+	<div class="semester">
+	<!-- Form for creating a new semester with text fields for each attribute -->
+		<%= form_for Semester.new do |f| %>
+		    <div class="field">
+		    	<%= f.label :year %><br>
+		    	<%= f.text_field :year %>
+		    </div>
+			<div class="field">
+				<%= f.select :season, options_for_select(Semester.seasons.keys) %>
+		    </div>
+		    <div class="actions">
+		    	<%= f.submit %>
+		  	</div>
+		  <% end %>
+  	</div>
+  	<div class="semester">
+  		<!--Looping through semesters, displaying its information, generating a form for new events to be created for that semester -->
+		<% @semesters.each do |sem| %>
+			<div class="col-sm-4 semester-container">  
+				<%= make_semester_viewable(sem) %>
+				<%= form_for Event.new do |f| %>
+					<div class="field">
+						<%= f.label "From name" %><br>
+						<%= text_field_tag :from_name %>
+					</div>
+					<div class="field">
+						<%= f.label "From email" %><br>
+						<%= text_field_tag :from_email %>
+					</div>
+					<div class="field">
+						<%= f.select :event_type, options_for_select(Event.event_types.keys) %>
+		    		</div>
+		    		<div class="field">
+						<%= f.label "Form id" %><br>
+		    			<%= f.text_field_tag :form_id %>
+		    		</div>
+		    		<%= f.hidden_field :semester_id, :value => sem.id %>
+		    		<div class="actions">
+		    			<%= f.submit %>
+		  			</div>
+				<% end %>
+				<!--Looping through all events for that semester -->
+				<div class="semester-event">
+					<% sem.events.each do |event| %>
+						<%= event.form_ids %>
+						<%= form_for event do |f| %>
+							<div id="form_id" class="field">
+		    					<%= text_field_tag :added_form_id %>
+		    				</div>
+						 	<div class="actions">
+		    					<button> Add form_id </button>
+		  					</div>
+						<% end %>
+						<%= button_to 'Delete Event', event, :method => :delete, :class => :destroy %>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
