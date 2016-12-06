@@ -70,7 +70,7 @@ class EventsController < ApplicationController
 
   def current
     events = Event.event_types.map{|type| Event.where(event_type: type).order('created_at DESC').first}
-    render json: events.compact!.map{|event| {:form_ids => event.form_ids, :form_names => event.form_names, 
+    render json: events.compact.map{|event| {:form_ids => event.form_ids, :form_names => event.form_names, 
                                         :form_routes => event.form_routes, :mailchimp_ids => event.mailchimp_ids, 
                                         :event_type => event.event_type, :season => event.semester.season, 
                                         :year => event.semester.year}}
