@@ -54,7 +54,7 @@ module MailchimpUtil
     # user.save!
     # user.password = nil
     # user.save!
-    # user
+    user
   end
 
   def gibbon

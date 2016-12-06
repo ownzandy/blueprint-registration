@@ -15,7 +15,7 @@ describe 'Database Synchronization' do
   include EventHelper
 
   before :all do
-    HackDukeAPI::Application.load_tasks
+    BlueprintRegistration::Application.load_tasks
     system 'bin/rails db:environment:set RAILS_ENV=test'
   end
 

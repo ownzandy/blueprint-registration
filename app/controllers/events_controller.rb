@@ -77,7 +77,7 @@ class EventsController < ApplicationController
   end
 
   def mailchimp
-    HackDukeAPI::Application.load_tasks
+    BlueprintRegistration::Application.load_tasks
     Rake::Task['resque:mailchimp'].invoke
     render json: {:action => 'Mailchimp synchronization performed'}
   end

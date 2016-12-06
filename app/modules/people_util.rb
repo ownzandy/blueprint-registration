@@ -86,6 +86,7 @@ module PeopleUtil
       # doesn't matter if he/she already exists
       mailchimp_id = event.mailchimp_ids[Person.roles[params[:role]]].split(',')[0]
       add_to_mailchimp_list(@event, existing_person, email, mailchimp_id)
+      
       if push 
         trigger_push
       end

@@ -14,7 +14,7 @@ if Rails.env.test?
   ActiveSupport::Deprecation.silenced = true
 end
 
-module HackDukeAPI
+module BlueprintRegistration
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
