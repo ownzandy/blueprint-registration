@@ -26,7 +26,7 @@ module TypeformWebhook
     params = { form_id: form_response[:form_id], person: person, 
       submit_date: DateTime.parse(form_response[:submitted_at]), parts: find_parts(form_response)} 
     parts.each do |role_name|
-      role = role_name.classify.constantize
+      model = role_name.classify.constantize
       role_hash = create_webhook_info_hash(model, form_response[:definition][:fields], form_response[:answers])
       role_sym = role.parameterize.underscore.to_sym 
       params[:role_sym] = role_hash
