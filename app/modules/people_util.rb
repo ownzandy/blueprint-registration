@@ -52,31 +52,29 @@ module PeopleUtil
   def receive_role_logic(params, push=false)
     email = clean_email(params[:person][:email])
     event = Event.where("'#{params[:form_id]}' = ANY (form_ids)").first
-    model = params[:role].classify.constantize
-    role = model.joins(:person).where('people.email = ? AND event_id = ?', email, event.id).first
-    role_sym = params[:role].parameterize.underscore.to_sym 
-    if role == nil
+    roles = params[:parts]
+    roles.each do |role_name|
       # creates new role if the role is not in the database
-      role = model.new(role_params(params[:role], params))
-      role.event = event
+
       existing_person = person_exists(email)
       if existing_person == nil
         # creates new person if person is not in the database
         person = Person.new(person_params(params))
         person.email = email
-        role.person = person
-        existing_person = person
       else
         # updates the person if the person is in the database
-        role.person = existing_person
-        role.person.update_attributes(person_params(params))
-        role.person.email = email
+        person = existing_person
+        person.update_attributes(person_params(params))
       end
 
-      # sends email with temporary password if it's a participant
-      if params[:role] == 'participant' && !Rails.env.test?
-        role.person = send_password(existing_person, email, true) 
+      role = person.send(role_name).where(event_id: event.id).first
+      if role == nil
+        role = model.new(role_params(role_name, params))
+        role.event = event
+      else
+        role.update_attributes(role_params(role_name, params))
       end
+      role.person = person
       
       append_to_submission_history(role, params)
       # save person and role
@@ -86,21 +84,14 @@ module PeopleUtil
       # doesn't matter if he/she already exists
       mailchimp_id = event.mailchimp_ids[Person.roles[params[:role]]].split(',')[0]
       add_to_mailchimp_list(@event, existing_person, email, mailchimp_id)
-      
-      if push 
-        trigger_push
-      end
-
-      begin
-        render json: {:person => person, role_sym(params[:role]) => role}
-      rescue
-        render json: {:errors => 'Person and role could not be converted to JSON'}
-      end
-    else
-
-    # updates the role if the role is in the database
-    update_role_logic(params, push)
     end
+
+    begin
+      render json: {:person => person}
+    rescue
+      render json: {:errors => 'Person and role could not be converted to JSON'}
+    end
+
   end
 
   def role_sym(role)
@@ -142,7 +133,7 @@ module PeopleUtil
     case Person.roles[role]
     when 0
       return params.require(:participant).permit(:status, :school, :website, :resume, :attending, :github,
-    																				 :portfolio, :graduation_year, :major, :over_eighteen, :slack_id, :track, :size,
+    																				 :portfolio, :graduation_year, :major, :over_eighteen, :slack_id, :track,
                                              :travel, :skills => [], :custom => [], :benefits => [], :part => [])
     when 1
       return params.require(:speaker).permit(:slack_id, :role, :department, :organization, :position, :date => [], :topic => [])
@@ -161,7 +152,7 @@ module PeopleUtil
 
   def person_params(params)
     params = prepare_hash_as_params(params)
-    params.require(:person).permit(:first_name, :gender, :last_name, :email, :phone, :slack_id, :ethnicity, :emergency_contacts, :dietary_restrictions => [])
+    params.require(:person).permit(:first_name, :gender, :last_name, :email, :phone, :slack_id, :ethnicity, :emergency_contacts, :size, :dietary_restrictions => [])
   end
 
   def prepare_hash_as_params(params)

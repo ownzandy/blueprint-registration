@@ -25,7 +25,7 @@ module TypeformWebhook
     replace_email_if_necessary(hidden_email, person)
     role_sym = role.parameterize.underscore.to_sym 
     params = { form_id: form_response[:form_id], person: person, role_sym => role_hash, role: role,
-    submit_date: DateTime.parse(form_response[:submitted_at])} 
+    submit_date: DateTime.parse(form_response[:submitted_at]), parts: find_parts(form_response)} 
     end
 
   def create_webhook_info_hash(model, fields, answers)
@@ -40,6 +40,20 @@ module TypeformWebhook
       end
     end
     hash
+  end
+
+  def find_parts(form_response)
+    parts = []
+    result = extract_webhook_result(form_response[:definition][:fields], 'part', form_respond[:answers])
+    result.each do |part|
+      if part == 'Student Participant'
+        parts << 'participant'
+      elsif part == 'Mentor'
+        parts << 'mentor'
+      elsif part == 'Speaker'
+        parts << 'speaker'
+      end
+    end
   end
 
   # parses the answer JSON based on the type
