@@ -18,15 +18,21 @@ module TypeformWebhook
       return {}
     end
     role = route[2]
-    model = role.classify.constantize
-    hidden_email = form_response[:hidden]['email']
-    role_hash = create_webhook_info_hash(model, form_response[:definition][:fields], form_response[:answers])
+
+    parts = find_parts(form_response)
     person = create_webhook_info_hash(Person, form_response[:definition][:fields], form_response[:answers])
     replace_email_if_necessary(hidden_email, person)
-    role_sym = role.parameterize.underscore.to_sym 
-    params = { form_id: form_response[:form_id], person: person, role_sym => role_hash, role: role,
-    submit_date: DateTime.parse(form_response[:submitted_at]), parts: find_parts(form_response)} 
+    hidden_email = form_response[:hidden]['email']
+    params = { form_id: form_response[:form_id], person: person, 
+      submit_date: DateTime.parse(form_response[:submitted_at]), parts: find_parts(form_response)} 
+    parts.each do |role_name|
+      role = role_name.classify.constantize
+      role_hash = create_webhook_info_hash(model, form_response[:definition][:fields], form_response[:answers])
+      role_sym = role.parameterize.underscore.to_sym 
+      params[:role_sym] = role_hash
     end
+    params 
+  end
 
   def create_webhook_info_hash(model, fields, answers)
     hash = {}
