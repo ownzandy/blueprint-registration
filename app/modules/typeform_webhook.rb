@@ -27,7 +27,7 @@ module TypeformWebhook
       model = role_name.classify.constantize
       role_hash = create_webhook_info_hash(model, form_response[:definition][:fields], form_response[:answers])
       role_sym = role_name.parameterize.underscore.to_sym 
-      params[:role_sym] = role_hash
+      params[role_sym] = role_hash
     end
     params 
   end
