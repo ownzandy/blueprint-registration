@@ -69,7 +69,11 @@ module PeopleUtil
       role = person.send(role_name).where(event_id: event.id).first
       if role == nil
         model = role_name.classify.constantize
-        role = model.new(role_params(role_name, params))
+        begin 
+          role = model.new(role_params(role_name, params))
+        rescue
+          role = model.new
+        end
         role.event = event
       else
         role.update_attributes(role_params(role_name, params))
