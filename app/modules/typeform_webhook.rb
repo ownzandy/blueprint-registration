@@ -52,6 +52,8 @@ module TypeformWebhook
         parts << 'mentor'
       elsif part == 'Speaker'
         parts << 'speaker'
+      elsif part == 'Volunteer'
+        parts << 'volunteer'
       end
     end
     parts
