@@ -21,8 +21,8 @@ module TypeformWebhook
 
     parts = find_parts(form_response)
     person = create_webhook_info_hash(Person, form_response[:definition][:fields], form_response[:answers])
-    replace_email_if_necessary(hidden_email, person)
     hidden_email = form_response[:hidden]['email']
+    replace_email_if_necessary(hidden_email, person)
     params = { form_id: form_response[:form_id], person: person, 
       submit_date: DateTime.parse(form_response[:submitted_at]), parts: find_parts(form_response)} 
     parts.each do |role_name|
