@@ -17,8 +17,6 @@ module TypeformWebhook
       no_route_error(form_response[:form_id])
       return {}
     end
-    role = route[2]
-
     parts = find_parts(form_response)
     person = create_webhook_info_hash(Person, form_response[:definition][:fields], form_response[:answers])
     hidden_email = form_response[:hidden]['email']
@@ -28,7 +26,7 @@ module TypeformWebhook
     parts.each do |role_name|
       model = role_name.classify.constantize
       role_hash = create_webhook_info_hash(model, form_response[:definition][:fields], form_response[:answers])
-      role_sym = role.parameterize.underscore.to_sym 
+      role_sym = role_name.parameterize.underscore.to_sym 
       params[:role_sym] = role_hash
     end
     params 
