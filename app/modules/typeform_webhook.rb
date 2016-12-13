@@ -44,7 +44,7 @@ module TypeformWebhook
 
   def find_parts(form_response)
     parts = []
-    result = extract_webhook_result(form_response[:definition][:fields], 'part', form_respond[:answers])
+    result = extract_webhook_result(form_response[:definition][:fields], 'part', form_response[:answers])
     result.each do |part|
       if part == 'Student Participant'
         parts << 'participant'
@@ -54,6 +54,7 @@ module TypeformWebhook
         parts << 'speaker'
       end
     end
+    parts
   end
 
   # parses the answer JSON based on the type

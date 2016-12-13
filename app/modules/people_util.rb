@@ -55,7 +55,6 @@ module PeopleUtil
     roles = params[:parts]
     roles.each do |role_name|
       # creates new role if the role is not in the database
-
       existing_person = person_exists(email)
       if existing_person == nil
         # creates new person if person is not in the database
@@ -74,9 +73,8 @@ module PeopleUtil
       else
         role.update_attributes(role_params(role_name, params))
       end
+
       role.person = person
-      
-      append_to_submission_history(role, params)
       # save person and role
       role.person.save!
       role.save!
