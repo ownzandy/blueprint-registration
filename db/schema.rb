@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161117194738) do
+ActiveRecord::Schema.define(version: 20161213022523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,11 +40,15 @@ ActiveRecord::Schema.define(version: 20161117194738) do
   create_table "mentors", force: :cascade do |t|
     t.integer "person_id"
     t.integer "event_id"
-    t.string  "skills",    default: [], array: true
+    t.string  "skills",       default: [], array: true
     t.string  "slack_id"
     t.string  "track"
-    t.integer "status",    default: 0
-    t.string  "benefits",  default: [], array: true
+    t.integer "status",       default: 0
+    t.string  "benefits",     default: [], array: true
+    t.string  "organization"
+    t.string  "position"
+    t.string  "department"
+    t.string  "role"
     t.index ["event_id"], name: "index_mentors_on_event_id", using: :btree
     t.index ["person_id"], name: "index_mentors_on_person_id", using: :btree
   end
@@ -85,6 +89,7 @@ ActiveRecord::Schema.define(version: 20161117194738) do
     t.datetime "updated_at",                   null: false
     t.string   "track"
     t.string   "benefits",        default: [],              array: true
+    t.string   "part",            default: [],              array: true
     t.index ["event_id"], name: "index_participants_on_event_id", using: :btree
     t.index ["person_id"], name: "index_participants_on_person_id", using: :btree
     t.index ["team_id"], name: "index_participants_on_team_id", using: :btree
@@ -107,6 +112,7 @@ ActiveRecord::Schema.define(version: 20161117194738) do
     t.string   "ethnicity"
     t.string   "dietary_restrictions",   default: [],              array: true
     t.string   "emergency_contacts"
+    t.string   "size"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -130,12 +136,16 @@ ActiveRecord::Schema.define(version: 20161117194738) do
   create_table "speakers", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "event_id"
-    t.string   "topic",       default: [],              array: true
-    t.string   "description", default: [],              array: true
-    t.datetime "date",        default: [],              array: true
+    t.string   "topic",        default: [],              array: true
+    t.string   "description",  default: [],              array: true
+    t.datetime "date",         default: [],              array: true
     t.string   "slack_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "position"
+    t.string   "organization"
+    t.string   "department"
+    t.string   "role"
     t.index ["event_id"], name: "index_speakers_on_event_id", using: :btree
     t.index ["person_id"], name: "index_speakers_on_person_id", using: :btree
   end
@@ -159,7 +169,6 @@ ActiveRecord::Schema.define(version: 20161117194738) do
     t.integer  "person_id"
     t.integer  "event_id"
     t.integer  "hours",      default: 0
-    t.string   "size"
     t.string   "times",      default: [],              array: true
     t.string   "custom",     default: [],              array: true
     t.string   "slack_id"

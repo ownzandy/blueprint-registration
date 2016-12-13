@@ -141,17 +141,17 @@ module PeopleUtil
     params = prepare_hash_as_params(params)
     case Person.roles[role]
     when 0
-      return params.require(:participant).permit(:status, :school, :website, :resume, :attending, :github, 
-    																				 :portfolio, :graduation_year, :major, :over_eighteen, :slack_id, :track, 
-                                             :travel, :skills => [], :custom => [], :benefits => [])
+      return params.require(:participant).permit(:status, :school, :website, :resume, :attending, :github,
+    																				 :portfolio, :graduation_year, :major, :over_eighteen, :slack_id, :track, :size,
+                                             :travel, :skills => [], :custom => [], :benefits => [], :part => [])
     when 1
-      return params.require(:speaker).permit(:slack_id, :date => [], :topic => [])
+      return params.require(:speaker).permit(:slack_id, :role, :department, :organization, :position, :date => [], :topic => [])
     when 2
       return params.require(:judge).permit(:slack_id, :skills => [])
     when 3
-      return params.require(:mentor).permit(:status, :slack_id, :track, :skills => [], :benefits => [])
+      return params.require(:mentor).permit(:status, :slack_id, :track, :role, :department, :organization, :position, :skills => [], :benefits => [])
     when 4
-      return params.require(:volunteer).permit(:status, :slack_id, :hours, :size, :times => [], :custom => [], :benefits => [])
+      return params.require(:volunteer).permit(:status, :slack_id, :hours, :times => [], :custom => [], :benefits => [])
     when 5
       return params.require(:organizer).permit(:slack_id)
     else 
