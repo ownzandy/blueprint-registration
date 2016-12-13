@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161213023557) do
+ActiveRecord::Schema.define(version: 20161213032605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20161213023557) do
     t.string  "position"
     t.string  "department"
     t.string  "role"
+    t.string  "custom",       default: [], array: true
     t.index ["event_id"], name: "index_mentors_on_event_id", using: :btree
     t.index ["person_id"], name: "index_mentors_on_person_id", using: :btree
   end
@@ -145,6 +146,7 @@ ActiveRecord::Schema.define(version: 20161213023557) do
     t.string   "organization"
     t.string   "department"
     t.string   "role"
+    t.string   "custom",       default: [],              array: true
     t.index ["event_id"], name: "index_speakers_on_event_id", using: :btree
     t.index ["person_id"], name: "index_speakers_on_person_id", using: :btree
   end

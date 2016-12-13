@@ -76,7 +76,11 @@ module PeopleUtil
         end
         role.event = event
       else
-        role.update_attributes(role_params(role_name, params))
+        begin 
+          role.update_attributes(role_params(role_name, params))
+        rescue
+          puts 'no update available'
+        end
       end
 
       role.person = person
