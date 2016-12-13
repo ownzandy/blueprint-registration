@@ -81,8 +81,8 @@ module PeopleUtil
       role.save!
       # determines mailchimp_id by role and adds to list 
       # doesn't matter if he/she already exists
-      mailchimp_id = event.mailchimp_ids[Person.roles[params[:role]]].split(',')[0]
-      add_to_mailchimp_list(@event, existing_person, email, mailchimp_id)
+      mailchimp_id = event.mailchimp_ids[Person.roles[role_name].split(',')[0]
+      add_to_mailchimp_list(event, person, email, mailchimp_id)
     end
 
     begin
